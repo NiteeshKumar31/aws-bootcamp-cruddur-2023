@@ -6,7 +6,7 @@
 
 #### Cruddur Napin Design
 
-[Cruddur Napkin Design](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/blob/main/_docs/assets/Cruddur-Conceptual_Napkin-Design.jpg)
+![Cruddur Napkin Design](assets/Cruddur-Conceptual_Napkin-Design.jpg)
 
 ## Getting Started with AWS CLI
 

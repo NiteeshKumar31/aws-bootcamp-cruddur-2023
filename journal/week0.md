@@ -6,7 +6,7 @@
 
 #### Cruddur Napin Design
 
-![Cruddur Napkin Design](assets/Cruddur-Conceptual_Napkin-Design.jpg)
+[Cruddur Napkin Design](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/blob/main/_docs/assets/Cruddur-Conceptual_Napkin-Design.jpg)
 
 ## Getting Started with AWS CLI
 
@@ -55,7 +55,7 @@ You should get something like this with details :).
 ```
 #### Proof
 
-![AWS CLI Proof](assets/aws-cli-installation-proof-week0.png)
+[AWS CLI Proof](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/blob/main/_docs/assets/aws-cli-installation-proof-week0.png)
 
 ## Creating a Budget through AWS CLI
 
@@ -76,7 +76,7 @@ aws budgets create-budget \
 ```
 #### Proof
 
-![budgets proof](assets/budgets-week0.png)
+[budgets proof](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/blob/main/_docs/assets/budgets-week0.png)
 	
 ### Create SNS Topic for Billing
 
@@ -119,6 +119,12 @@ aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.js
 ```
 #### Proof
 
-![billing alarm](assets/billing-alarm-week0.png)
+[billing alarm](assets/billing-alarm-week0.png](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/blob/main/_docs/assets/billing-alarm-week0.png)
 
+#### Issues that i had while working on Week0
 
+- AWS CLI didn't istalled on my first try and i found out it's due to not yml file(It's not updted properly)
+- Had issues while perfoming budgets and billing alarms on my first try and went with manual creation istead through CLI. Cameback other day and successfully completed creating budgets and billing alarms through CLI.
+- Had issues while pushing the chages to Github account(Couldn't capture the error though) but cameback after sometime and completed pushing successfully.
+- Having some issues while uploading the images into markdown files. Checking on it.
+- Mostly i worked on all the things twice in Week-0 inorder to complete them succesfully. Hoping i could do the things in my first Attempt in Week-1 :)

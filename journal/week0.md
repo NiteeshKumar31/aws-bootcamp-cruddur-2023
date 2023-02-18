@@ -1,5 +1,13 @@
 # Week 0 — Billing and Architecture
 
+#### Cruddur Architecutural diagram
+
+[Architecural Link](https://lucid.app/lucidchart/f1d3f719-bec8-4a69-a0bc-eae305a27051/edit?invitationId=inv_60fbd21d-eb63-4079-8697-69db4ee083b5)
+
+#### Cruddur Napin Design
+
+[Cruddur Napkin Design](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/blob/main/_docs/assets/Cruddur-Conceptual_Napkin-Design.jpg)
+
 ## Getting Started with AWS CLI
 
 - We will be making use of Gitpod as part of AWS CLI installation.
@@ -45,6 +53,10 @@ You should get something like this with details :).
     "Arn": ""
 }
 ```
+#### Proof
+
+![AWS CLI Proof](assets/aws-cli-installation-proof-week0.png)
+
 ## Creating a Budget through AWS CLI
 
 [Budget CLI Reference documention](https://docs.aws.amazon.com/cli/latest/reference/budgets/create-budget.html#examples)
@@ -62,7 +74,9 @@ aws budgets create-budget \
     --budget file://aws/json/budget.json \
     --notifications-with-subscribers file://aws/json/budget-notifications-with-subscribers.json
 ```
+#### Proof
 
+![budgets proof](assets/budgets-week0.png)
 	
 ### Create SNS Topic for Billing
 
@@ -103,5 +117,8 @@ rn:aws:sns:<REGION>:<ACCOUNT_ID>:<SNS_TOPIC_NAME>
 ```sh
 aws cloudwatch put-metric-alarm --cli-input-json file://aws/json/alarm-config.json
 ```
+#### Proof
+
+![billing alarm](assets/billing-alarm-week0.png)
 
 

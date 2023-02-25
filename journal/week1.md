@@ -1,1 +1,177 @@
 # Week 1 — App Containerization
+
+
+## VSCode Docker Extension
+
+Install Docker Extensions if you're not seeing it on you lefthand pane in Gitpod.
+
+https://code.visualstudio.com/docs/containers/overview
+
+## Containerize Backend
+
+```sh
+pip3 install -r requirements.txt
+```
+- To install Python flask in the backend
+
+```
+python3 -m flask run --host=0.0.0.0 --port=4567 
+```
+- Now, click on ports and open 4567, you should be getting 404 error, that's because we didn't configured Environmental Variables.
+- Configure Environmental Variables and try installing flask.
+
+```sh
+export FRONTEND_URL="*"
+export BACKEND_URL="*"
+python3 -m flask run --host=0.0.0.0 --port=4567
+cd ..
+```
+
+- make sure to unlock the port on the port tab
+- open the link for 4567 in your browser
+- append to the url to `/api/activities/home`
+- you should get back some json in url
+
+
+### Build Container
+
+- Unset FRONTEND_URL and Unset BACKEND_URL
+- Run docker build to create backend-flask container
+
+```sh
+docker build -t  backend-flask ./backend-flask
+```
+
+### Run Container
+
+Run 
+```sh
+docker run --rm -p 4567:4567 -it backend-flask
+FRONTEND_URL="*" BACKEND_URL="*" docker run --rm -p 4567:4567 -it backend-flask
+export FRONTEND_URL="*"
+export BACKEND_URL="*"
+docker run --rm -p 4567:4567 -it -e FRONTEND_URL='*' -e BACKEND_URL='*' backend-flask
+```
+
+To Run in background
+```sh
+docker container run --rm -p 4567:4567 -d backend-flask
+```
+
+### Get Container Images or Running Container Ids
+
+```
+docker ps
+docker images
+```
+
+
+### Send Curl to Test Server
+
+```sh
+curl -X GET http://localhost:4567/api/activities/home -H "Accept: application/json" -H "Content-Type: application/json"
+```
+
+### Check Container Logs
+
+```sh
+docker logs CONTAINER_ID -f
+docker logs backend-flask -f
+docker logs $CONTAINER_ID -f
+```
+
+> You can just right click a container and see logs in VSCode with Docker extension
+
+### Delete an Image
+
+```sh
+docker image rm backend-flask --force
+```
+
+> There are some cases where you need to use the --force
+
+### Overriding Ports
+
+```sh
+FLASK_ENV=production PORT=8080 docker run -p 4567:4567 -it backend-flask
+```
+
+> Look at Dockerfile to see how ${PORT} is interpolated
+
+## Containerize Frontend
+
+## Run NPM Install
+
+We have to run NPM Install before building the container since it needs to copy the contents of node_modules
+
+```
+cd frontend-react-js
+npm i
+```
+## Setting up Frontend
+
+Create a file here: `frontend-react-js/Dockerfile`
+
+```dockerfile
+FROM node:16.18
+
+ENV PORT=3000
+
+COPY . /frontend-react-js
+WORKDIR /frontend-react-js
+RUN npm install 
+EXPOSE ${PORT}
+CMD ["npm", "start"]
+```
+- You need to do a npm install 
+
+### Build Container
+
+```sh
+docker build -t frontend-react-js ./frontend-react-js
+```
+
+### Run Container
+
+```sh
+docker run -p 3000:3000 -d frontend-react-js
+```
+
+## Multiple Containers
+
+### Create a docker-compose file
+
+Create `docker-compose.yml` at the root of your project.
+
+```yaml
+version: "3.8"
+services:
+  backend-flask:
+    environment:
+      FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build: ./backend-flask
+    ports:
+      - "4567:4567"
+    volumes:
+      - ./backend-flask:/backend-flask
+  frontend-react-js:
+    environment:
+      REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build: ./frontend-react-js
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend-react-js:/frontend-react-js
+
+# the name flag is a hack to change the default prepend folder
+# name when outputting the image names
+networks: 
+  internal-network:
+    driver: bridge
+    name: cruddur
+```
+- Now Right click on docker_compose.yml and click on Compose up(does both docker build and run for both frontend and backend)
+- Make sure to check whether all the ports are Unlocked. If they're you can see data in the frontend
+
+

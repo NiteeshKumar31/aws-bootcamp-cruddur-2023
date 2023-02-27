@@ -258,4 +258,44 @@ volumes:
 ```
 
 
+### Home Work Challenges:
+
+#### Tag and Push a image to DockerHub
+
+- Create a Docker hub account through [Dockerhubhome](https://hub.docker.com)
+- Open Terminal, login to docker hub and enter your docker hub credentials
+
+```
+docker login
+```
+
+- Create a new repository in Dockerhub
+
+##### Tag The Image
+
+```
+docker tag amazon/dynamodb-local:latest niteeshkumar31/awsbootcamp-week1:latest
+```
+
+##### Push The Tmage
+
+```
+docker push niteeshkumar31/awsbootcamp-week1:latest
+```
+
+##### Log
+
+```
+$ docker push niteeshkumar31/awsbootcamp-week1:latest
+The push refers to repository [docker.io/niteeshkumar31/awsbootcamp-week1]
+a4ad287dc486: Mounted from amazon/dynamodb-local 
+5f70bf18a086: Mounted from amazon/dynamodb-local 
+b2830b340adb: Mounted from amazon/dynamodb-local 
+8c5ff259ef50: Mounted from amazon/dynamodb-local 
+latest: digest: sha256:99b8daf110db0172e040d352d527e7f9db9b5fbda9f2366e216cc81c2d4b4f26 size: 1160
+```
+
+##### Proof 
+
+- need to upload image
 

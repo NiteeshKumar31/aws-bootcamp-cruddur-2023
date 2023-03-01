@@ -299,3 +299,16 @@ latest: digest: sha256:99b8daf110db0172e040d352d527e7f9db9b5fbda9f2366e216cc81c2
 
 - need to upload image
 
+#### Implement a healthcheck in the V3 Docker compose file
+
+- Followed Medium artice of [healthcheck-in-docker-compose](https://medium.com/geekculture/how-to-successfully-implement-a-healthcheck-in-docker-compose-efced60bc08e)
+- Created 3 files of Dockercompose.yml, index.html, Dockerfile in Homework folder of my repo.
+- Made changes to Interval,retries,start_period,timeout for faster response
+- Ran Docker compose up by rightclicking on Dockercompose.yml
+- Checked logs and state of my container in Docker terminal.
+- Checked health through command `docker inspect very-simple-web`
+
+- Need to insert image of inspect
+- Need to insert image of helloworld webpage
+
+

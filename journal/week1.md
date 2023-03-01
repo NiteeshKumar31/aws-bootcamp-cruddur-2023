@@ -311,4 +311,6 @@ latest: digest: sha256:99b8daf110db0172e040d352d527e7f9db9b5fbda9f2366e216cc81c2
 - Need to insert image of inspect
 - Need to insert image of helloworld webpage
 
+#### Docker installation on Local Machine
 
+- Installed Docker on my windows machine and ran nginix.

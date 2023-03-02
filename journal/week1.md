@@ -297,7 +297,7 @@ latest: digest: sha256:99b8daf110db0172e040d352d527e7f9db9b5fbda9f2366e216cc81c2
 
 ##### Proof 
 
-- need to upload image
+![dockerhub](assets/dockerhub.jpg)
 
 #### Implement a healthcheck in the V3 Docker compose file
 
@@ -308,9 +308,15 @@ latest: digest: sha256:99b8daf110db0172e040d352d527e7f9db9b5fbda9f2366e216cc81c2
 - Checked logs and state of my container in Docker terminal.
 - Checked health through command `docker inspect very-simple-web`
 
-- Need to insert image of inspect
-- Need to insert image of helloworld webpage
+##### Proof
+
+![healthcheck](assets/healthcheck.jpg)
+![helloworld-healthcheck](assets/helloworld-healthcheck.jpg)
 
 #### Docker installation on Local Machine
 
 - Installed Docker on my windows machine and ran nginix.
+
+##### Proof
+
+![docker_localmachine](assets/docker_localmachine.jpg)

@@ -320,3 +320,25 @@ latest: digest: sha256:99b8daf110db0172e040d352d527e7f9db9b5fbda9f2366e216cc81c2
 ##### Proof
 
 ![docker_localmachine](assets/docker_localmachine.jpg)
+
+
+#### Running Docker in AWS EC2
+
+- Created an instance with belwo userdata
+
+```
+#!/bin/bash
+sudo yum update -y
+sudo yum install -y docker
+sudo service docker start
+sudo usermod -a -G docker ec2-user 
+```
+- Connected to EC2 instance through EC2 connect and did `Docker login`
+- Pulled nginx image by running `sudo docker pull nginx`
+- ran docker through `sudo docker run -d -p 80:80 nginx`
+
+##### Proof
+
+![docker-in-ec2](assets/docker-in-ec2.jpg)
+
+- Make sure to do a `docker logout` at the end.

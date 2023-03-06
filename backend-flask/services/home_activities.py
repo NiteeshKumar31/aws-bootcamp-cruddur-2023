@@ -9,7 +9,9 @@ class HomeActivities:
     #added as part of tracer creation
     with tracer.start_as_current_span("home-activities-mock-data"):
     #added as part of tracer creation
+      span = trace.get_current_span()
       now = datetime.now(timezone.utc).astimezone()
+      span.set_attribute("app.now", now.isofformat())
       results = [{
         'uuid': '68f126b0-1ceb-4a33-88be-d90fa7109eee',
         'handle':  'Andrew Brown',
@@ -49,4 +51,5 @@ class HomeActivities:
         'replies': []
       }
       ]
+      span.set_attribute("app.result_length", length(results))
       return results

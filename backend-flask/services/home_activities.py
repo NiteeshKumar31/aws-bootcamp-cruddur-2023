@@ -1,10 +1,14 @@
 from datetime import datetime, timedelta, timezone
+##added as part of tracer creation
 from opentelemetry import trace
 tracer = trace.get_tracer("home.activities")
+##added as part of tracer creation
 
 class HomeActivities:
   def run():
+    #added as part of tracer creation
     with tracer.start_as_current_span("home-activities-mock-data"):
+    #added as part of tracer creation
       now = datetime.now(timezone.utc).astimezone()
       results = [{
         'uuid': '68f126b0-1ceb-4a33-88be-d90fa7109eee',

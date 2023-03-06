@@ -65,6 +65,10 @@ RequestsInstrumentor().instrument()
 
 [Honeycomb_Config_Commit](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/commit/03e599c75433f0597c7c4a8c0369306d2be5339f)
 
+#### Proof
+
+![trace](assets/trace-1-week-2.jpg)
+
 ###### Creating A Tracer for Home Activities
 
 Open home_activities.py and add belwo code from [opentelemetry_python](https://docs.honeycomb.io/getting-data-in/opentelemetry/python/) and follow steps from creating spans
@@ -92,5 +96,9 @@ span.set_attribute("user.id", user.id())
 
 [Tracer_Commit](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/commit/3e09ad4d439165188dc42d29e84b3c55116ce910)
 
+#### Proofs:
 
+![Tracker-1](assets/tracer-2.1-week-2.jpg)
+![Tracker-2](assets/trace-2.2-week-2.jpg)
+![HeatMap](assets/heatmap-week-2.jpg)
 

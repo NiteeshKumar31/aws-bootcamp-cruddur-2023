@@ -102,3 +102,146 @@ span.set_attribute("user.id", user.id())
 ![Tracker-2](assets/trace-2.2-week-2.jpg)
 ![HeatMap](assets/heatmap-week-2.jpg)
 
+
+#### Installing X-ray python SDK
+
+- Beofre doing x-ray things, Add your AWS region repository variable
+
+```
+export AWS_REGION="ap-south-1"
+gp env AWS_REGION="ap-south-1"
+```
+
+- Open requirements file in the backend and add `aws-xray-sdk`
+- Execute requirements file using `pip install -r requirements.txt`
+
+Add belwo code to `app.py`
+
+```
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
+xray_url = os.getenv("AWS_XRAY_URL")
+xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+```
+
+- Make sure to add below line of code right after `app = Flask(__name__)`
+
+```
+XRayMiddleware(app, xray_recorder)
+```
+
+- Open aws/json folder and create a `x-ray.json` file and add
+
+```
+{
+  "SamplingRule": {
+      "RuleName": "Cruddur",
+      "ResourceARN": "*",
+      "Priority": 9000,
+      "FixedRate": 0.1,
+      "ReservoirSize": 5,
+      "ServiceName": "backend-flask",
+      "ServiceType": "*",
+      "Host": "*",
+      "HTTPMethod": "*",
+      "URLPath": "*",
+      "Version": 1
+  }
+}
+```
+
+### Creating an X-ray Group
+
+- In the terminal run below command. If you get some json, probably it will means it's working.
+
+```
+aws xray create-group \
+   --group-name "Cruddur" \
+   --filter-expression "service(\"backend-flask\")"
+```
+
+- For Creating a Sampling rule run `aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json` in terminal
+
+[Installing and Creating group in X-Ray](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/commit/81a313b4a500ea25f3c370b9450ad7419a235dfd)
+
+![X_ray_traces_group](assets/X_ray_traces_group.jpg)
+
+### Add xray-deamon Service to Docker Compose
+
+```
+  xray-daemon:
+    image: "amazon/aws-xray-daemon"
+    environment:
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_REGION: "ap-south-1"
+    command:
+      - "xray -o -b xray-daemon:2000"
+    ports:
+      - 2000:2000/udp
+```
+
+- We need to add these two env vars to our backend-flask in our docker-compose.yml file
+
+```
+      AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
+      AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
+```
+
+- Push the changes to your repo and run docker compose up
+[Add xray-deamon Service to Docker Compose](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/commit/3f195b1bcaa52eac499b19fffefddfeaf39a0ed1)
+
+![traces_proof_1_week-2](assets/traces_proof_1_week-2.jpg)
+
+### CloudWatch Logs
+
+- Open Requirements in backend and add `watchtower`
+- Execute requirements file using `pip install -r requirements.txt`
+
+In `app.py` add
+
+```
+import watchtower
+import logging
+from time import strftime
+```
+
+```
+# Configuring Logger to Use CloudWatch
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+LOGGER.addHandler(console_handler)
+LOGGER.addHandler(cw_handler)
+LOGGER.info("test log")
+
+```
+
+```
+@app.after_request
+def after_request(response):
+    timestamp = strftime('[%Y-%b-%d %H:%M]')
+    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+    return response
+```
+
+- Under home_activities.py add `logger.info("HomeActivities")` right after run() function and update run() to `run(logger)`
+- Inside `app.py` go to home/activities route function and update data variable to `data = HomeActivities.run(logger=LOGGER)`
+- Inside docker_compose file add belwo environment variables.
+
+```
+AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
+AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+```
+
+[Cloud watch logs set up](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/commit/9949f535f8b6d53aade91918474c5ddd545ac9d7)
+
+![cloudwatch_logs](assets/cloudwatch_logs_week-2.jpg)
+![cloudwatch_logs_1](assets/cloudwatch_logs_1_week-2.jpg)
+
+- Comment out all the things of cloud watch logs and x-ray to get ride of the spend
+
+[Commenting CloudWatch&X-ray things to avoid spend](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/commit/00c2626392b525fb08797d82397b0ece904b1b93)

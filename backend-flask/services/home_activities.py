@@ -5,8 +5,8 @@ tracer = trace.get_tracer("home.activities")
 ##added as part of tracer creation
 
 class HomeActivities:
-  def run(Logger):
-    logger.info("HomeActivities")
+  def run():
+    #logger.info("HomeActivities")
     #added as part of tracer creation
     with tracer.start_as_current_span("home-activities-mock-data"):
     #added as part of tracer creation

@@ -245,3 +245,55 @@ AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
 - Comment out all the things of cloud watch logs and x-ray to get ride of the spend
 
 [Commenting CloudWatch&X-ray things to avoid spend](https://github.com/NiteeshKumar31/aws-bootcamp-cruddur-2023/commit/00c2626392b525fb08797d82397b0ece904b1b93)
+
+# Rollbar
+
+- Add `blinker` and `rollbar` in requirements file 
+- do `pip install -r requirements.txt`
+
+- Set up rollbar variables
+
+export ROLLBAR_ACCESS_TOKEN="YOUR_ROLLBAR_ACCESS_TOKEN"
+gp env ROLLBAR_ACCESS_TOKEN="YOUR_ROLLBAR_ACCESS_TOKEN"
+
+- In `app.py` add below libraries for Roll bar
+
+```py
+import os
+import rollbar
+import rollbar.contrib.flask
+from flask import got_request_exception
+```
+
+- Make sure to add the below code after `app = Flask(__name__)`
+
+```py
+rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
+@app.before_first_request
+def init_rollbar():
+    """init rollbar module"""
+    rollbar.init(
+        # access token
+        rollbar_access_token,
+        # environment name
+        'production',
+        # server root directory, makes tracebacks prettier
+        root=os.path.dirname(os.path.realpath(__file__)),
+        # flask already sets up logging
+        allow_logging_basic_config=False)
+
+    # send exceptions from `app` to rollbar, using flask's signal system.
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+```
+
+- Add below endpoint to `app.py`
+
+```py
+@app.route('/rollbar/test')
+def rollbar_test():
+    rollbar.report_message('Hello World!', 'warning')
+    return "Hello World!"
+```
+![rollbar_1_week-2](assets/rollbar_1_week-2.jpg)
+
+![rollbar_2_week-2](assets/rollbar_1_week-2.jpg)
